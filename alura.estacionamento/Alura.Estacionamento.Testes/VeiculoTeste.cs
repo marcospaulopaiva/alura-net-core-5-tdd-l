@@ -44,5 +44,23 @@ namespace Alura.Estacionamento.Testes
         {
 
         }
+        
+        [Fact]
+        public void ValidarDadosVeiculo()
+        {
+            //Arrange
+            var veiculo = new Veiculo();
+            veiculo.Proprietario = "Marcos Paulo";
+            veiculo.Tipo = TipoVeiculo.Automovel;
+            veiculo.Placa = "ZAP-0800";
+            veiculo.Cor = "Amarelo";
+            veiculo.Modelo = "R34 Skyline";
+
+            //Act
+            string dados = veiculo.ToString();
+
+            //Assert
+            Assert.Contains("Tipo do Veículo: Automovel", dados);
+        }
     }
 }
