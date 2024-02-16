@@ -1,7 +1,4 @@
-﻿using Alura.Estacionamento.Alura.Estacionamento.Modelos;
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 
 namespace Alura.Estacionamento.Modelos
 {
