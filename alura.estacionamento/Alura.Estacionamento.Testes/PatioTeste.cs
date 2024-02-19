@@ -1,4 +1,5 @@
-﻿using Alura.Estacionamento.Modelos;
+﻿using Alura.Estacionamento.Alura.Estacionamento.Modelos;
+using Alura.Estacionamento.Modelos;
 using Xunit;
 
 namespace Alura.Estacionamento.Testes
@@ -7,11 +8,15 @@ namespace Alura.Estacionamento.Testes
     {
         private Patio _patio;
         private Veiculo _veiculo;
+        private Operador _operador;
 
         public PatioTeste()
         {
-            _patio = new Patio();
+            _operador = new Operador();
+            _operador.Nome = "Nome Operador";
             _veiculo = new Veiculo();
+            _patio = new Patio();
+            _patio.OperadorPatio = _operador;
         }
 
         [Fact]
