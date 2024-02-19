@@ -1,25 +1,29 @@
 ﻿using Alura.Estacionamento.Alura.Estacionamento.Modelos;
-using Alura.Estacionamento.Modelos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Numerics;
 
 namespace Alura.Estacionamento.Modelos
 {
     public class Patio
     {
-       
         public Patio()
         {
             Faturado = 0;
-            veiculos = new List<Veiculo>();
+            _veiculos = new List<Veiculo>();
         }
-        private List<Veiculo> veiculos;
-        private double faturado;
-        public double Faturado { get => faturado; set => faturado = value; }
-        public List<Veiculo> Veiculos { get => veiculos; set => veiculos = value; }       
+        
+        public List<Veiculo> Veiculos { get => _veiculos; set => _veiculos = value; }       
+        private List<Veiculo> _veiculos;
+
+        public double Faturado { get => _faturado; set => _faturado = value; }
+        private double _faturado;
+
+        public Operador OperadorPatio { get => _operador; set => _operador = value; }
+        private Operador _operador;
+
+
         public double TotalFaturado()
         {
             return this.Faturado;
@@ -33,7 +37,8 @@ namespace Alura.Estacionamento.Modelos
 
         public void RegistrarEntradaVeiculo(Veiculo veiculo)
         {
-            veiculo.HoraEntrada = DateTime.Now;            
+            veiculo.HoraEntrada = DateTime.Now;
+            this.GerarTicket(veiculo);
             this.Veiculos.Add(veiculo);            
         }
 
@@ -81,6 +86,39 @@ namespace Alura.Estacionamento.Modelos
             }
 
             return informacao;
+        }
+
+        public Veiculo PesquisaVeiculo(string placa)
+        {
+            var encontrado = (from veiculo in this.Veiculos
+                              where veiculo.Placa == placa
+                              select veiculo).SingleOrDefault();
+
+            return encontrado;
+        }
+
+        public void AlterarDadosVeiculo(Veiculo veiculoAlterado)
+        {
+            var encontrado = (from veiculo in this.Veiculos
+                              where veiculo.Placa == veiculoAlterado.Placa
+                              select veiculo).SingleOrDefault();
+
+            encontrado.AlterarDados(veiculoAlterado);
+        }
+
+        private string GerarTicket(Veiculo veiculo)
+        {
+            veiculo.IdTicket = new Guid().ToString().Substring(0, 5);
+            
+            string ticket = "### Ticket Estacionamento Alura ###" +
+                            $">>> Identificador: {veiculo.IdTicket}" +
+                            $">>> Data/Hora de Entrada: {veiculo.HoraEntrada}" +
+                            $">>> Placa Veículo: {veiculo.Placa}" +
+                            $">>> Operador Patio: {this.OperadorPatio.Nome}";
+            
+            veiculo.Ticket = ticket;
+
+            return ticket;
         }
     }
 }
